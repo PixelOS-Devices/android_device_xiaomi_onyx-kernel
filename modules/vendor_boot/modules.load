@@ -121,6 +121,7 @@ boottime.ko
 mi_ubt.ko
 printk_enhance.ko
 kshrink_slabd.ko
+io_monitor.ko
 binder_gki.ko
 millet_core.ko
 millet_pkg.ko
@@ -128,6 +129,7 @@ millet_hs.ko
 millet_binder.ko
 millet_sig.ko
 millet_oem_cgroup.ko
+miloadtrace.ko
 mi_schedule.ko
 metis.ko
 mist.ko

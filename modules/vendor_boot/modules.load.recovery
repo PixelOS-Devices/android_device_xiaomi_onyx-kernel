@@ -121,6 +121,7 @@ boottime.ko
 mi_ubt.ko
 printk_enhance.ko
 kshrink_slabd.ko
+io_monitor.ko
 binder_gki.ko
 millet_core.ko
 millet_pkg.ko
@@ -128,6 +129,7 @@ millet_hs.ko
 millet_binder.ko
 millet_sig.ko
 millet_oem_cgroup.ko
+miloadtrace.ko
 mi_schedule.ko
 metis.ko
 mist.ko
@@ -136,6 +138,7 @@ rt_mod.ko
 qrtr.ko
 qrtr-gunyah.ko
 msm_sysstats.ko
+lb.ko
 nls_ucs2_utils.ko
 netfs.ko
 cifs_arc4.ko
@@ -301,7 +304,7 @@ mca_strategy_class.ko
 mca_qcom_subpmic_proxy.ko
 nuvolta_1652.ko
 sc96281_comp.ko
-sc8581.ko
+sc8581_sy6541.ko
 sc8541.ko
 bq27z561.ko
 sc7601.ko
@@ -339,11 +342,10 @@ cl_dsp-core.ko
 si_core_module.ko
 mem_object.ko
 qcom-rng.ko
+unfairmem.ko
 mi_mempool.ko
 binder_prio.ko
-mi_mem_engine.ko
-mi_log.ko
-mi_exception_log.ko
+scene_swappiness.ko
 qcom_pil_info.ko
 rproc_qcom_common.ko
 qcom_q6v5.ko
@@ -375,6 +377,7 @@ mi_ubt_test.ko
 bootmonitor.ko
 mi_trace.ko
 swinfo.ko
+perfmgr.ko
 migt.ko
 ofpart.ko
 chipreg.ko
