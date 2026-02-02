@@ -7,6 +7,11 @@ MKDTBOIMG=../../../system/libufdt/utils/src/mkdtboimg.py
 UNPACKBOOTIMG=../../../system/tools/mkbootimg/unpack_bootimg.py
 ROM_ZIP=$1
 
+declare -a DTBO_PANEL_PATCHES=(
+    "Onyx:dsi_o10u_36_02_0b_dsc_vid"
+    "Onyx:dsi_o10u_42_02_0a_dsc_vid"
+)
+
 error_handler() {
     if [[ -d $extract_out ]]; then
         echo "Error detected, cleaning temporal working directory $extract_out"
@@ -23,6 +28,10 @@ function usage() {
 
 function get_path() {
 	echo "$extract_out/$1"
+}
+
+function mkdtboimg() {
+	$MKDTBOIMG $@
 }
 
 function unpackbootimg() {
@@ -131,8 +140,22 @@ find "${extract_out}/dtbs" -type f -name "*.dtb" \
     -exec printf "  - dtbs/" \; \
     -exec basename {} \;
 
-cp -f "${extract_out}/dtbo.img" ./images/dtbo.img
-echo "Done"
+python3 "${extract_out}/extract_dtb.py" "${extract_out}/dtbo.img" -o "${extract_out}/dtbo" > /dev/null
+for DTBO_PANEL_PATCH in "${DTBO_PANEL_PATCHES[@]}"; do
+    DTBO_PANEL_PATCH=(${DTBO_PANEL_PATCH//:/ })
+    device=${DTBO_PANEL_PATCH[0]}
+    panel=${DTBO_PANEL_PATCH[1]}
+    find "${extract_out}/dtbo" -type f -name "*${device}*.dtb" -exec grep -q "${panel}" {} \; \
+        -exec bash -c '
+            dt_node="$(fdtget -t s "{}" /__symbols__ "'${panel}'")";
+            fdtput -t i "{}" "$dt_node" qcom,dsi-supported-dfps-list 120 90 60;
+        ' \; \
+        -exec printf "    + Fixed up removed 30hz of ${panel} in dtbo/" \; \
+        -exec basename {} \;
+done
+mkdtboimg \
+    create "./images/dtbo.img" --page_size=4096 "${extract_out}/dtbo/"*.dtb
+echo "    + Generated images/dtbo.img"
 
 rm -rf $extract_out
 echo "Extracted files successfully"
